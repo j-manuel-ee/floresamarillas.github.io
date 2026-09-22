@@ -1,341 +1,548 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Para que nunca seas espectadora❤️</title>
-<style>
-  :root{
-    --mini-size: 28px;
-    --big-size: 44px;
-  }
-  html,body{height:100%;margin:0;overflow:hidden;font-family: "Segoe UI", Roboto, Arial, sans-serif}
-  body{background:black;display:flex;align-items:center;justify-content:center}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Para que nunca seas espectadora ❤️</title>
 
-  /* Background transitions */
-  body.atardecer{ animation: bodySunset 9s ease-in-out forwards; }
-  @keyframes bodySunset{
-    0%   { background: black; }
-    30%  { background: linear-gradient(to top, #0b0f1a 0%, #1f1222 60%); }
-    60%  { background: linear-gradient(to top, #3b1f5b 0%, #ff6a00 60%); }
-    100% { background: linear-gradient(to top, #ffd9b3 0%, #87ceeb 100%); }
-  }
-  body.day { background: linear-gradient(to top, #87ceeb 0%, #dff3ff 60%); }
+  <!-- Google Fonts & Bootstrap 5 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  /* Stage and center scene */
-  #stage{position:relative;width:100%;height:100%;overflow:hidden}
-  .escena{
-    position:absolute; left:50%; top:50%;
-    transform:translate(-50%,-50%);
-    width: min(520px,86vw); height: min(520px,86vw);
-    display:flex; align-items:center; justify-content:center; pointer-events:none;
-  }
+  <style>
+    :root {
+      --mini-size: 32px;
+      --big-size: 48px;
+      --font-handwriting: 'Caveat', cursive;
+      --font-main: 'Montserrat', sans-serif;
+    }
 
-  /* SVG flower (initial) */
-  svg#flowerSvg{ width:100%; height:100%; overflow:visible; display:block }
-  #sol {
-    transform-origin: 100px 100px;
-    transform: scale(0);
-    transition: transform 900ms cubic-bezier(.2,.9,.2,1);
-    filter: drop-shadow(0 8px 26px rgba(255,160,0,0.25));
-  }
-  .petal-group{
-    transform-box: view-box;
-    transform-origin: 100px 100px;
-    transform: rotate(0deg) scale(0);
-    transition: transform 600ms cubic-bezier(.2,.9,.2,1);
-  }
-  .petal-group.sway{ animation: petalSway 4.5s ease-in-out infinite alternate; }
-  @keyframes petalSway{
-    0%{ transform: rotate(var(--ang)) scale(1); }
-    100%{ transform: rotate(calc(var(--ang) + 5deg)) scale(1); }
-  }
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-family: var(--font-main);
+      user-select: none;
+    }
 
-  /* Petal style */
-  .petal { stroke: rgba(0,0,0,0.06); stroke-width:0.6; }
+    body {
+      background: #050508;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 1.5s ease;
+    }
 
-  /* mid message */
-  #midMsg{
-    position:absolute; left:50%; transform:translateX(-50%);
-    bottom:3.6rem; color:#3b2a00; font-weight:700; font-size:1.3rem;
-    background: rgba(255,255,255,0.85); padding:0.35rem 0.8rem; border-radius:8px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.12); opacity:0; transition:opacity 500ms;
-    pointer-events:none;
-  }
-  #midMsg.visible{ opacity:1; }
+    /* Fondo Mágico de Atardecer */
+    body.atardecer {
+      animation: bodySunset 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
 
-  /* Stage for mini flowers */
-  #flowersStage{ position:absolute; inset:0; pointer-events:none; }
+    @keyframes bodySunset {
+      0%   { background: #050508; }
+      25%  { background: radial-gradient(circle at center, #2c1635 0%, #090a10 100%); }
+      60%  { background: radial-gradient(circle at center, #ff5e62 0%, #3a1c71 100%); }
+      100% { background: linear-gradient(to top, #ffe3c8 0%, #7bc6ec 100%); }
+    }
 
-  /* mini flower container */
-  .mini{
-    position:absolute;
-    width:var(--mini-size);
-    height:var(--mini-size);
-    transform: scale(0);
-    opacity:0;
-    transition:
-      left 1.2s cubic-bezier(.2,.9,.2,1),
-      top 1.2s cubic-bezier(.2,.9,.2,1),
-      transform 600ms ease,
-      opacity 600ms ease,
-      width 600ms ease,
-      height 600ms ease;
-    will-change: left, top, transform;
-    overflow:visible;
-  }
-  .mini.show{ transform: scale(1); opacity:1; }
+    body.day {
+      background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+    }
 
-  /* inside mini: svg scales to full */
-  .mini svg{ width:100%; height:100%; display:block; }
+    /* Contenedor Principal */
+    #stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-  /* enlarged bouquet flowers */
-  .mini.big{ width:var(--big-size); height:var(--big-size); }
+    /* Capa de destellos / Partículas */
+    #sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
 
-  /* stem appended to big flower */
-  .mini .stem {
-    position:absolute; left:50%; transform:translateX(-50%); top:calc(100% - 2px);
-    width:5px; height:80px; border-radius:4px;
-    background: linear-gradient(#2e7d32,#1f7a2a); opacity:0;
-    transition: opacity 400ms ease, height 500ms ease;
-  }
-  .mini .stem.show{ opacity:1; }
+    .sparkle {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #fff, 0 0 20px #ffea79;
+      opacity: 0;
+      animation: sparkleFade 3s infinite ease-in-out;
+    }
 
-  /* final overlay text */
-  #finalOverlay{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; }
-  #finalText{
-    font-size: clamp(20px, 4vw, 44px);
-    color:#1f2a4a; font-weight:800; text-align:center;
-    opacity:0; transform:translateY(12px);
-    transition: opacity 700ms ease, transform 700ms ease;
-    padding: 0.6rem 1rem; background: rgba(255,255,255,0.7); border-radius: 10px;
-  }
-  #finalText.visible{ opacity:1; transform:translateY(0); }
+    @keyframes sparkleFade {
+      0%, 100% { opacity: 0; transform: scale(0.2); }
+      50% { opacity: 0.9; transform: scale(1.2); }
+    }
 
-  /* responsive */
-  @media (max-width:480px){
-    :root{ --mini-size: 20px; --big-size: 34px; }
-    #midMsg{ font-size:1rem; bottom:2.4rem; }
-  }
-</style>
+    /* Escena Central de Flor Gigante */
+    .escena {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(500px, 85vw);
+      height: min(500px, 85vw);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Flor SVG Inicial */
+    svg#flowerSvg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      filter: drop-shadow(0 10px 25px rgba(255, 180, 0, 0.35));
+    }
+
+    #sol {
+      transform-origin: 100px 100px;
+      transform: scale(0);
+      transition: transform 1000ms cubic-bezier(.17,.89,.32,1.28);
+      filter: drop-shadow(0 0 20px #ffb300);
+    }
+
+    .petal-group {
+      transform-box: view-box;
+      transform-origin: 100px 100px;
+      transform: rotate(0deg) scale(0);
+      transition: transform 700ms cubic-bezier(.17,.89,.32,1.28);
+    }
+
+    .petal-group.sway {
+      animation: petalSway 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes petalSway {
+      0%   { transform: rotate(var(--ang)) scale(1); }
+      100% { transform: rotate(calc(var(--ang) + 4deg)) scale(1.03); }
+    }
+
+    .petal {
+      stroke: rgba(255, 255, 255, 0.3);
+      stroke-width: 0.8;
+    }
+
+    /* Mensaje Medio */
+    #midMsg {
+      position: absolute;
+      left: 50%;
+      bottom: 12%;
+      transform: translateX(-50%) translateY(20px);
+      font-family: var(--font-handwriting);
+      font-size: 2.2rem;
+      color: #4a3200;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 0.4rem 1.8rem;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: all 600ms cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 5;
+    }
+
+    #midMsg.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Stage de Flores Múltiples */
+    #flowersStage {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    /* Flores Mini */
+    .mini {
+      position: absolute;
+      width: var(--mini-size);
+      height: var(--mini-size);
+      transform: scale(0) rotate(0deg);
+      opacity: 0;
+      transition:
+        left 1.3s cubic-bezier(.25,1,.5,1),
+        top 1.3s cubic-bezier(.25,1,.5,1),
+        transform 700ms ease,
+        opacity 600ms ease,
+        width 600ms ease,
+        height 600ms ease;
+      will-change: left, top, transform;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+    }
+
+    .mini.show {
+      transform: scale(1) rotate(var(--rot, 0deg));
+      opacity: 1;
+    }
+
+    .mini svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .mini.big {
+      width: var(--big-size);
+      height: var(--big-size);
+    }
+
+    /* Tallo del Ramo */
+    .mini .stem {
+      position: absolute;
+      left: 50%;
+      top: 80%;
+      width: 4px;
+      height: 0px;
+      background: linear-gradient(to bottom, #4caf50, #1b5e20);
+      border-radius: 4px;
+      transform: translateX(-50%);
+      z-index: -1;
+      opacity: 0;
+      transition: height 600ms ease, opacity 400ms ease;
+    }
+
+    .mini .stem.show {
+      opacity: 0.85;
+      height: 90px;
+    }
+
+    /* Overlay y Carta Final */
+    #finalOverlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 10;
+      padding: 1rem;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 24px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+      transition: all 900ms cubic-bezier(0.17, 0.89, 0.32, 1.28);
+    }
+
+    .glass-card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    #finalText {
+      font-family: var(--font-handwriting);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #2c1d11;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 0 2px 10px rgba(255,255,255,0.5);
+    }
+
+    .btn-replay {
+      margin-top: 1.2rem;
+      background: #ffb300;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1.4rem;
+      border-radius: 50px;
+      font-family: var(--font-main);
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: 0 6px 15px rgba(255, 179, 0, 0.4);
+      transition: all 300ms ease;
+      cursor: pointer;
+    }
+
+    .btn-replay:hover {
+      background: #ffa000;
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 179, 0, 0.6);
+    }
+
+    @media (max-width: 576px) {
+      :root { --mini-size: 24px; --big-size: 38px; }
+      #midMsg { font-size: 1.7rem; bottom: 8%; }
+      .glass-card { padding: 1.5rem 1.2rem; }
+    }
+  </style>
 </head>
 <body>
+
   <div id="stage">
+    <!-- Capa de Destellos -->
+    <div id="sparkles"></div>
+
+    <!-- Escena Central -->
     <div class="escena">
       <svg id="flowerSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <radialGradient id="gSol" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stop-color="#fff8b0"/>
-            <stop offset="55%" stop-color="#ffd24d"/>
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="40%" stop-color="#ffea79"/>
             <stop offset="100%" stop-color="#ffb300"/>
           </radialGradient>
         </defs>
-        <circle id="sol" cx="100" cy="100" r="18" fill="url(#gSol)"></circle>
+        <circle id="sol" cx="100" cy="100" r="20" fill="url(#gSol)"></circle>
         <g id="petalsRoot"></g>
       </svg>
       <div id="midMsg"></div>
     </div>
 
+    <!-- Escena Flores Múltiples -->
     <div id="flowersStage"></div>
 
-    <div id="finalOverlay"><div id="finalText"></div></div>
+    <!-- Carta / Mensaje Final -->
+    <div id="finalOverlay">
+      <div class="glass-card" id="cardContainer">
+        <h1 id="finalText"></h1>
+        <button class="btn-replay" onclick="location.reload()">Ver de nuevo ✨</button>
+      </div>
+    </div>
   </div>
 
 <script>
-/* Helpers */
 const wait = ms => new Promise(res => setTimeout(res, ms));
 const W = () => window.innerWidth;
 const H = () => window.innerHeight;
 
-/* Elements */
 const bodyEl = document.body;
 const solEl = document.getElementById('sol');
 const petalsRoot = document.getElementById('petalsRoot');
 const midMsg = document.getElementById('midMsg');
 const flowersStage = document.getElementById('flowersStage');
+const cardContainer = document.getElementById('cardContainer');
 const finalText = document.getElementById('finalText');
+
+/* Generar destellos de fondo */
+function initSparkles() {
+  const container = document.getElementById('sparkles');
+  const count = 35;
+  for (let i = 0; i < count; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    const size = Math.random() * 4 + 2;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 3 + 's';
+    s.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    container.appendChild(s);
+  }
+}
 
 (async function run() {
   try {
-    // 1) Inicia atardecer
+    initSparkles();
+
+    // 1) Atardecer
     await wait(300);
     bodyEl.classList.add('atardecer');
 
-    // 2) Aparece sol (centro)
-    await wait(900);
+    // 2) Aparece Sol
+    await wait(1000);
     solEl.style.transform = 'scale(1)';
 
-    // 3) Brotan pétalos (inicial flower) alrededor
+    // 3) Nacer de la Flor Amarilla Gigante
     await wait(600);
-    const PETALS = 12;
-    const radiusOffset = 40;
-    for (let i=0;i<PETALS;i++){
+    const PETALS = 14;
+    const radiusOffset = 42;
+    for (let i = 0; i < PETALS; i++) {
       const angle = i * (360 / PETALS);
-      const g = document.createElementNS('http://www.w3.org/2000/svg','g');
-      g.setAttribute('class','petal-group');
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'petal-group');
       g.style.setProperty('--ang', angle + 'deg');
-      g.style.transform = `rotate(${angle}deg) scale(0)`;
 
-      const e = document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-      e.setAttribute('cx','100'); e.setAttribute('cy', String(100 - radiusOffset));
-      e.setAttribute('rx','22'); e.setAttribute('ry','36');
-      e.setAttribute('class','petal');
-      const hue = 52 + Math.floor(Math.random()*8 - 4);
-      e.setAttribute('fill', `hsl(${hue},95%,60%)`);
+      const e = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+      e.setAttribute('cx', '100'); 
+      e.setAttribute('cy', String(100 - radiusOffset));
+      e.setAttribute('rx', '20'); 
+      e.setAttribute('ry', '38');
+      e.setAttribute('class', 'petal');
+
+      const hue = 48 + Math.floor(Math.random() * 8);
+      e.setAttribute('fill', `hsl(${hue}, 100%, 60%)`);
+
       g.appendChild(e);
       petalsRoot.appendChild(g);
 
-      // animate with small stagger
-      await wait(220);
+      await wait(180);
       g.style.transform = `rotate(${angle}deg) scale(1)`;
-      setTimeout(()=> g.classList.add('sway'), 700 + Math.random()*400);
+      setTimeout(() => g.classList.add('sway'), 800 + Math.random() * 400);
     }
 
-    // 4) Mensaje "Esto aún no acaba..."
-    await wait(900);
-    midMsg.textContent = 'Esto aún no acaba...';
+    // 4) Mensaje intermedio
+    await wait(800);
+    midMsg.textContent = 'Esto aún no acaba... ✨';
     midMsg.classList.add('visible');
 
-    // wait and fade initial flower
-    await wait(1400);
+    await wait(2000);
     midMsg.classList.remove('visible');
-    document.getElementById('flowerSvg').style.transition = 'opacity 700ms ease, transform 700ms ease';
-    document.getElementById('flowerSvg').style.opacity = '0';
-    document.getElementById('flowerSvg').style.transform = 'scale(0.6) translateY(-20px)';
 
-    // 5) Cambiar a fondo azul (día)
+    // Desvanecer flor inicial
+    const flowerSvg = document.getElementById('flowerSvg');
+    flowerSvg.style.transition = 'opacity 800ms ease, transform 800ms ease';
+    flowerSvg.style.opacity = '0';
+    flowerSvg.style.transform = 'scale(0.5) translateY(-30px)';
+
+    // 5) Transición al día
     await wait(600);
     bodyEl.classList.remove('atardecer');
     bodyEl.classList.add('day');
 
-    // remove svg after a bit
-    await wait(300);
-    document.getElementById('flowerSvg').style.display = 'none';
+    await wait(400);
+    flowerSvg.style.display = 'none';
 
-    // 6) Explosión de flores (cada una es un SVG con pétalos)
-    await wait(200);
-    const TOTAL_FLOWERS = 140; // ajusta si va lento
+    // 6) Lluvia / Explosión de Flores
+    const TOTAL_FLOWERS = 130;
     const flowers = [];
-    for (let i=0;i<TOTAL_FLOWERS;i++){
+    for (let i = 0; i < TOTAL_FLOWERS; i++) {
       const f = createMiniFlower();
-      // random start position scattered
-      const startX = Math.random() * W();
-      const startY = Math.random() * H();
-      f.style.left = startX + 'px';
-      f.style.top = startY + 'px';
+      f.style.left = Math.random() * W() + 'px';
+      f.style.top = Math.random() * H() + 'px';
+      
+      const randomRot = (Math.random() * 60 - 30) + 'deg';
+      f.style.setProperty('--rot', randomRot);
+
       flowersStage.appendChild(f);
       flowers.push(f);
-      // stagger show
-      setTimeout(()=> f.classList.add('show'), 15 * i);
-      await wait(8);
-    }
 
-    await wait(1200);
-
-    // 7) Formar corazón con la mayoría de las flores
-    // heart curve parametric (scaled)
-    function heart(t){
-      const x = 16 * Math.pow(Math.sin(t),3);
-      const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t);
-      return [x,y];
-    }
-    const centerX = W()/2;
-    const centerY = H()/2 - 40;
-    const heartScale = Math.min(W(), H()) / 28;
-    const HEART_COUNT = Math.min(flowers.length, 120);
-
-    for (let i=0;i<HEART_COUNT;i++){
-      const t = (i/HEART_COUNT) * Math.PI * 2;
-      const [hx,hy] = heart(t);
-      const tx = centerX + hx * heartScale;
-      const ty = centerY - hy * heartScale;
-      const el = flowers[i];
-      // center element by its size
-      const w = parseFloat(getComputedStyle(el).width);
-      const h = parseFloat(getComputedStyle(el).height);
-      el.style.left = (tx - w/2) + 'px';
-      el.style.top  = (ty - h/2) + 'px';
-      // tiny scale pop
-      el.style.transform = 'scale(1.05)';
-      setTimeout(()=> el.style.transform = 'scale(1)', 300 + (i%6)*30);
-      await wait(12);
-    }
-
-    await wait(1600);
-
-    // 8) Formar ramo con 50 flores: seleccionar primeras 50
-    const BOUQUET_SIZE = 50;
-    const selected = flowers.slice(0, BOUQUET_SIZE);
-
-    // fade out extras
-    for (let k=BOUQUET_SIZE; k<flowers.length; k++){
-      const el = flowers[k];
-      el.style.transition = 'opacity 500ms ease, transform 500ms ease';
-      el.style.opacity = '0';
-      el.style.transform = 'scale(0.75)';
-    }
-    await wait(400);
-
-    // bouquet grid config
-    const cols = 10;
-    const spacingX = 36;
-    const spacingY = 36;
-    const baseX = W()/2 - ((cols - 1)/2) * spacingX;
-    const baseY = H() - 220;
-
-    for (let i=0;i<BOUQUET_SIZE;i++){
-      const r = Math.floor(i / cols);
-      const c = i % cols;
-      const tx = baseX + c * spacingX;
-      const ty = baseY + r * spacingY;
-      const el = selected[i];
-      const w = parseFloat(getComputedStyle(el).width);
-      const h = parseFloat(getComputedStyle(el).height);
-      el.style.left = (tx - w/2) + 'px';
-      el.style.top  = (ty - h/2) + 'px';
-      // enlarge to big
-      el.classList.add('big');
-      // append stem if not present
-      if (!el.querySelector('.stem')){
-        const stem = document.createElement('div');
-        stem.className = 'stem';
-        el.appendChild(stem);
-        // show stem slightly staggered
-        setTimeout(()=> stem.classList.add('show'), 300 + i*8);
-      }
-      await wait(22);
+      setTimeout(() => f.classList.add('show'), 12 * i);
+      await wait(6);
     }
 
     await wait(1000);
 
-    // 9) Mostrar mensaje final
-    finalText.textContent = '🌼 Para ti que nunca será espectadora 💛';
-    finalText.classList.add('visible');
+    // 7) Formar Corazón
+    function heartParametric(t) {
+      const x = 16 * Math.pow(Math.sin(t), 3);
+      const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+      return [x, y];
+    }
 
-  } catch(err){
+    const centerX = W() / 2;
+    const centerY = H() / 2 - 30;
+    const heartScale = Math.min(W(), H()) / 28;
+    const HEART_COUNT = Math.min(flowers.length, 110);
+
+    for (let i = 0; i < HEART_COUNT; i++) {
+      const t = (i / HEART_COUNT) * Math.PI * 2;
+      const [hx, hy] = heartParametric(t);
+      const tx = centerX + hx * heartScale;
+      const ty = centerY - hy * heartScale;
+      const el = flowers[i];
+
+      const w = parseFloat(getComputedStyle(el).width);
+      const h = parseFloat(getComputedStyle(el).height);
+
+      el.style.left = (tx - w / 2) + 'px';
+      el.style.top = (ty - h / 2) + 'px';
+      el.style.transform = `scale(1.1) rotate(${Math.random() * 40 - 20}deg)`;
+
+      await wait(10);
+    }
+
+    await wait(1800);
+
+    // 8) Formar Ramo Elegante
+    const BOUQUET_SIZE = 45;
+    const selected = flowers.slice(0, BOUQUET_SIZE);
+
+    // Fade a las sobrantes
+    for (let k = BOUQUET_SIZE; k < flowers.length; k++) {
+      flowers[k].style.transition = 'opacity 600ms ease, transform 600ms ease';
+      flowers[k].style.opacity = '0';
+      flowers[k].style.transform = 'scale(0.3)';
+    }
+
+    await wait(400);
+
+    const cols = 9;
+    const spacingX = 38;
+    const spacingY = 34;
+    const baseX = W() / 2 - ((cols - 1) / 2) * spacingX;
+    const baseY = H() - 220;
+
+    for (let i = 0; i < BOUQUET_SIZE; i++) {
+      const r = Math.floor(i / cols);
+      const c = i % cols;
+      const tx = baseX + c * spacingX + (Math.random() * 8 - 4);
+      const ty = baseY + r * spacingY + (Math.random() * 8 - 4);
+
+      const el = selected[i];
+      const w = parseFloat(getComputedStyle(el).width);
+      const h = parseFloat(getComputedStyle(el).height);
+
+      el.style.left = (tx - w / 2) + 'px';
+      el.style.top = (ty - h / 2) + 'px';
+      el.classList.add('big');
+
+      if (!el.querySelector('.stem')) {
+        const stem = document.createElement('div');
+        stem.className = 'stem';
+        el.appendChild(stem);
+        setTimeout(() => stem.classList.add('show'), 250 + i * 10);
+      }
+      await wait(20);
+    }
+
+    await wait(1200);
+
+    // 9) Mostrar Carta Final
+    finalText.innerHTML = '🌼 Para ti,<br>que nunca serás espectadora 💛';
+    cardContainer.classList.add('visible');
+
+  } catch (err) {
     console.error('Error en la secuencia:', err);
   }
 })();
 
-/* Crea un elemento .mini que contiene una flor SVG con pétalos (6) y centro */
-function createMiniFlower(){
+/* Generador de Flores SVG */
+function createMiniFlower() {
   const div = document.createElement('div');
   div.className = 'mini';
-  div.style.position = 'absolute';
-  // inner SVG (100x100)
-  const svg = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    ${[0,1,2,3,4,5].map(i=>{
-      const ang = i * (360/6);
-      const hue = 52 + Math.floor(Math.random()*10 - 5);
-      // ellipse centered at (50,30) rotated by ang about (50,50)
-      return `<g transform="rotate(${ang} 50 50)"><ellipse cx="50" cy="30" rx="12" ry="24" fill="hsl(${hue},95%,60%)" stroke="rgba(0,0,0,0.06)" stroke-width="0.5"/></g>`;
-    }).join('')}
-    <circle cx="50" cy="50" r="8" fill="#e6b800" />
+
+  const petalsCount = 7;
+  let petalsSvg = '';
+  for (let i = 0; i < petalsCount; i++) {
+    const ang = i * (360 / petalsCount);
+    const hue = 48 + Math.floor(Math.random() * 10 - 5);
+    petalsSvg += `<g transform="rotate(${ang} 50 50)">
+      <ellipse cx="50" cy="26" rx="11" ry="24" fill="hsl(${hue}, 100%, 60%)" stroke="rgba(255,255,255,0.4)" stroke-width="0.6"/>
+    </g>`;
+  }
+
+  div.innerHTML = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    ${petalsSvg}
+    <circle cx="50" cy="50" r="9" fill="#ff9100" />
+    <circle cx="50" cy="50" r="7" fill="#ffd500" />
   </svg>`;
-  div.innerHTML = svg;
-  // ensure transition for left/top set initially
+
   div.style.left = '-9999px';
-  div.style.top  = '-9999px';
+  div.style.top = '-9999px';
   return div;
 }
 </script>
