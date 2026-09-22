@@ -13,8 +13,8 @@
 
   <style>
     :root {
-      --mini-size: 32px;
-      --big-size: 48px;
+      --mini-size: 30px;
+      --big-size: 38px;
       --font-handwriting: 'Caveat', cursive;
       --font-main: 'Montserrat', sans-serif;
     }
@@ -181,7 +181,7 @@
         width 600ms ease,
         height 600ms ease;
       will-change: left, top, transform;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 3px 6px rgba(0,0,0,0.15));
     }
 
     .mini.show {
@@ -200,25 +200,54 @@
       height: var(--big-size);
     }
 
-    /* Tallo del Ramo */
-    .mini .stem {
+    /* Papel y Envoltura del Ramo Buchón */
+    #buchonWrapper {
       position: absolute;
       left: 50%;
-      top: 80%;
-      width: 4px;
-      height: 0px;
-      background: linear-gradient(to bottom, #4caf50, #1b5e20);
-      border-radius: 4px;
-      transform: translateX(-50%);
-      z-index: -1;
+      transform: translateX(-50%) translateY(50px) scale(0.8);
       opacity: 0;
-      transition: height 600ms ease, opacity 400ms ease;
+      pointer-events: none;
+      z-index: 2;
+      transition: all 1000ms cubic-bezier(0.25, 1, 0.5, 1);
     }
 
-    .mini .stem.show {
-      opacity: 0.85;
-      height: 90px;
+    #buchonWrapper.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
     }
+
+    .wrapper-paper {
+      width: min(380px, 85vw);
+      height: 260px;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2319 100%);
+      border: 2px solid #dfb15b;
+      clip-path: polygon(0% 20%, 15% 0%, 50% 10%, 85% 0%, 100% 20%, 80% 100%, 20% 100%);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .wrapper-ribbon {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 25px;
+      background: #dfb15b;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .wrapper-ribbon::before, .wrapper-ribbon::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      width: 20px;
+      height: 40px;
+      background: #dfb15b;
+    }
+    .wrapper-ribbon::before { left: 5px; transform: rotate(15deg); }
+    .wrapper-ribbon::after { right: 5px; transform: rotate(-15deg); }
 
     /* Overlay y Carta Final */
     #finalOverlay {
@@ -283,9 +312,10 @@
     }
 
     @media (max-width: 576px) {
-      :root { --mini-size: 24px; --big-size: 38px; }
+      :root { --mini-size: 22px; --big-size: 32px; }
       #midMsg { font-size: 1.7rem; bottom: 8%; }
       .glass-card { padding: 1.5rem 1.2rem; }
+      .wrapper-paper { width: 300px; height: 210px; }
     }
   </style>
 </head>
@@ -311,6 +341,12 @@
       <div id="midMsg"></div>
     </div>
 
+    <!-- Envoltura Papel Ramo Buchón -->
+    <div id="buchonWrapper">
+      <div class="wrapper-paper"></div>
+      <div class="wrapper-ribbon"></div>
+    </div>
+
     <!-- Escena Flores Múltiples -->
     <div id="flowersStage"></div>
 
@@ -333,6 +369,7 @@ const solEl = document.getElementById('sol');
 const petalsRoot = document.getElementById('petalsRoot');
 const midMsg = document.getElementById('midMsg');
 const flowersStage = document.getElementById('flowersStage');
+const buchonWrapper = document.getElementById('buchonWrapper');
 const cardContainer = document.getElementById('cardContainer');
 const finalText = document.getElementById('finalText');
 
@@ -394,7 +431,7 @@ function initSparkles() {
       setTimeout(() => g.classList.add('sway'), 800 + Math.random() * 400);
     }
 
-    // 4) Mensaje intermedio (MÁS FRESCO Y AMIGABLE)
+    // 4) Mensaje intermedio
     await wait(800);
     midMsg.textContent = 'Espera un segundo... ✨';
     midMsg.classList.add('visible');
@@ -417,7 +454,7 @@ function initSparkles() {
     flowerSvg.style.display = 'none';
 
     // 6) Lluvia / Explosión de Flores
-    const TOTAL_FLOWERS = 130;
+    const TOTAL_FLOWERS = 110;
     const flowers = [];
     for (let i = 0; i < TOTAL_FLOWERS; i++) {
       const f = createMiniFlower();
@@ -438,7 +475,6 @@ function initSparkles() {
 
     // 7) Formar ESTRELLA BRILLANTE ⭐
     function starParametric(t) {
-      // Ecuación paramétrica de una estrella de 5 puntas
       const r = 12 * (Math.sin(5 * t) * 0.4 + 0.8);
       const x = r * Math.cos(t);
       const y = r * Math.sin(t);
@@ -448,10 +484,9 @@ function initSparkles() {
     const centerX = W() / 2;
     const centerY = H() / 2 - 30;
     const starScale = Math.min(W(), H()) / 25;
-    const STAR_COUNT = Math.min(flowers.length, 110);
 
-    for (let i = 0; i < STAR_COUNT; i++) {
-      const t = (i / STAR_COUNT) * Math.PI * 2;
+    for (let i = 0; i < TOTAL_FLOWERS; i++) {
+      const t = (i / TOTAL_FLOWERS) * Math.PI * 2;
       const [sx, sy] = starParametric(t);
       const tx = centerX + sx * starScale;
       const ty = centerY - sy * starScale;
@@ -469,51 +504,41 @@ function initSparkles() {
 
     await wait(1800);
 
-    // 8) Formar Ramo Elegante
-    const BOUQUET_SIZE = 45;
-    const selected = flowers.slice(0, BOUQUET_SIZE);
-
-    // Fade a las sobrantes
-    for (let k = BOUQUET_SIZE; k < flowers.length; k++) {
-      flowers[k].style.transition = 'opacity 600ms ease, transform 600ms ease';
-      flowers[k].style.opacity = '0';
-      flowers[k].style.transform = 'scale(0.3)';
-    }
+    // 8) Formar RAMO BUCHÓN GIGANTE (Con TODAS las 110 flores)
+    // Aparecer envoltura del ramo abajo
+    const buchonBaseY = H() - (W() < 576 ? 180 : 220);
+    buchonWrapper.style.top = (buchonBaseY - 40) + 'px';
+    buchonWrapper.classList.add('show');
 
     await wait(400);
 
-    const cols = 9;
-    const spacingX = 38;
-    const spacingY = 34;
-    const baseX = W() / 2 - ((cols - 1) / 2) * spacingX;
-    const baseY = H() - 220;
+    // Posicionar flores formando una gran cúpula/domo densa
+    const radiusMax = Math.min(W() * 0.38, 160);
+    
+    for (let i = 0; i < TOTAL_FLOWERS; i++) {
+      // Distribución en espiral de Vogel (Fermat) para llenar el domo de forma perfecta
+      const phi = i * 137.5 * (Math.PI / 180);
+      const r = Math.sqrt(i / TOTAL_FLOWERS) * radiusMax;
+      
+      const tx = centerX + r * Math.cos(phi) + (Math.random() * 6 - 3);
+      // aplanar un poco el fondo para que encaje en el papel
+      const ty = (buchonBaseY - 110) + (r * 0.75 * Math.sin(phi)) + (Math.random() * 6 - 3);
 
-    for (let i = 0; i < BOUQUET_SIZE; i++) {
-      const r = Math.floor(i / cols);
-      const c = i % cols;
-      const tx = baseX + c * spacingX + (Math.random() * 8 - 4);
-      const ty = baseY + r * spacingY + (Math.random() * 8 - 4);
-
-      const el = selected[i];
+      const el = flowers[i];
       const w = parseFloat(getComputedStyle(el).width);
       const h = parseFloat(getComputedStyle(el).height);
 
       el.style.left = (tx - w / 2) + 'px';
       el.style.top = (ty - h / 2) + 'px';
       el.classList.add('big');
+      el.style.zIndex = Math.floor(r); // Profundidad
 
-      if (!el.querySelector('.stem')) {
-        const stem = document.createElement('div');
-        stem.className = 'stem';
-        el.appendChild(stem);
-        setTimeout(() => stem.classList.add('show'), 250 + i * 10);
-      }
-      await wait(20);
+      await wait(12);
     }
 
     await wait(1200);
 
-    // 9) Mostrar Carta Final (MENSAJE NEUTRAL Y LINDO)
+    // 9) Mostrar Carta Final
     finalText.innerHTML = '🌼 Para ti,<br>que nunca serás espectadora ✨';
     cardContainer.classList.add('visible');
 
