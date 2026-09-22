@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Para que nunca seas espectadora ❤️</title>
+  <title>¡Para ti! ✨</title>
 
   <!-- Google Fonts & Bootstrap 5 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -394,9 +394,9 @@ function initSparkles() {
       setTimeout(() => g.classList.add('sway'), 800 + Math.random() * 400);
     }
 
-    // 4) Mensaje intermedio
+    // 4) Mensaje intermedio (MÁS FRESCO Y AMIGABLE)
     await wait(800);
-    midMsg.textContent = 'Esto aún no acaba... ✨';
+    midMsg.textContent = 'Espera un segundo... ✨';
     midMsg.classList.add('visible');
 
     await wait(2000);
@@ -436,23 +436,25 @@ function initSparkles() {
 
     await wait(1000);
 
-    // 7) Formar Corazón
-    function heartParametric(t) {
-      const x = 16 * Math.pow(Math.sin(t), 3);
-      const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+    // 7) Formar ESTRELLA BRILLANTE ⭐
+    function starParametric(t) {
+      // Ecuación paramétrica de una estrella de 5 puntas
+      const r = 12 * (Math.sin(5 * t) * 0.4 + 0.8);
+      const x = r * Math.cos(t);
+      const y = r * Math.sin(t);
       return [x, y];
     }
 
     const centerX = W() / 2;
     const centerY = H() / 2 - 30;
-    const heartScale = Math.min(W(), H()) / 28;
-    const HEART_COUNT = Math.min(flowers.length, 110);
+    const starScale = Math.min(W(), H()) / 25;
+    const STAR_COUNT = Math.min(flowers.length, 110);
 
-    for (let i = 0; i < HEART_COUNT; i++) {
-      const t = (i / HEART_COUNT) * Math.PI * 2;
-      const [hx, hy] = heartParametric(t);
-      const tx = centerX + hx * heartScale;
-      const ty = centerY - hy * heartScale;
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const t = (i / STAR_COUNT) * Math.PI * 2;
+      const [sx, sy] = starParametric(t);
+      const tx = centerX + sx * starScale;
+      const ty = centerY - sy * starScale;
       const el = flowers[i];
 
       const w = parseFloat(getComputedStyle(el).width);
@@ -511,8 +513,8 @@ function initSparkles() {
 
     await wait(1200);
 
-    // 9) Mostrar Carta Final
-    finalText.innerHTML = '🌼 Para ti,<br>que nunca serás espectadora 💛';
+    // 9) Mostrar Carta Final (MENSAJE NEUTRAL Y LINDO)
+    finalText.innerHTML = '🌼 Para ti,<br>que nunca serás espectadora ✨';
     cardContainer.classList.add('visible');
 
   } catch (err) {
