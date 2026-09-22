@@ -13,8 +13,8 @@
 
   <style>
     :root {
-      --mini-size: 30px;
-      --big-size: 38px;
+      --mini-size: 28px;
+      --big-size: 36px;
       --font-handwriting: 'Caveat', cursive;
       --font-main: 'Montserrat', sans-serif;
     }
@@ -141,7 +141,7 @@
       font-family: var(--font-handwriting);
       font-size: 2.2rem;
       color: #4a3200;
-      background: rgba(255, 255, 255, 0.75);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(8px);
       padding: 0.4rem 1.8rem;
       border-radius: 50px;
@@ -163,7 +163,7 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 3;
+      z-index: 4;
     }
 
     /* Flores Mini */
@@ -207,7 +207,7 @@
       transform: translateX(-50%) translateY(50px) scale(0.8);
       opacity: 0;
       pointer-events: none;
-      z-index: 2;
+      z-index: 3;
       transition: all 1000ms cubic-bezier(0.25, 1, 0.5, 1);
     }
 
@@ -217,22 +217,22 @@
     }
 
     .wrapper-paper {
-      width: min(380px, 85vw);
-      height: 260px;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2319 100%);
+      width: min(340px, 85vw);
+      height: 220px;
+      background: linear-gradient(135deg, #111111 0%, #221c16 100%);
       border: 2px solid #dfb15b;
-      clip-path: polygon(0% 20%, 15% 0%, 50% 10%, 85% 0%, 100% 20%, 80% 100%, 20% 100%);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      clip-path: polygon(0% 25%, 18% 0%, 50% 12%, 82% 0%, 100% 25%, 78% 100%, 22% 100%);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.35);
       position: relative;
     }
 
     .wrapper-ribbon {
       position: absolute;
-      bottom: 25px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 60px;
-      height: 25px;
+      width: 55px;
+      height: 22px;
       background: #dfb15b;
       border-radius: 4px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
@@ -242,37 +242,40 @@
       content: '';
       position: absolute;
       top: 100%;
-      width: 20px;
-      height: 40px;
+      width: 18px;
+      height: 35px;
       background: #dfb15b;
     }
-    .wrapper-ribbon::before { left: 5px; transform: rotate(15deg); }
-    .wrapper-ribbon::after { right: 5px; transform: rotate(-15deg); }
+    .wrapper-ribbon::before { left: 4px; transform: rotate(15deg); }
+    .wrapper-ribbon::after { right: 4px; transform: rotate(-15deg); }
 
-    /* Overlay y Carta Final */
+    /* Overlay y Carta Final (ARRIBA PARA NO TAPAR EL RAMO) */
     #finalOverlay {
       position: absolute;
-      inset: 0;
+      top: 6%;
+      left: 0;
+      right: 0;
       display: flex;
       align-items: center;
       justify-content: center;
       pointer-events: none;
       z-index: 10;
-      padding: 1rem;
+      padding: 0 1rem;
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      border-radius: 24px;
-      padding: 2rem 2.5rem;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      padding: 1.2rem 2rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
       text-align: center;
       opacity: 0;
-      transform: translateY(30px) scale(0.95);
+      transform: translateY(-20px) scale(0.95);
       transition: all 900ms cubic-bezier(0.17, 0.89, 0.32, 1.28);
+      max-width: 90vw;
     }
 
     .glass-card.visible {
@@ -283,7 +286,7 @@
 
     #finalText {
       font-family: var(--font-handwriting);
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
       color: #2c1d11;
       font-weight: 700;
       margin: 0;
@@ -291,16 +294,16 @@
     }
 
     .btn-replay {
-      margin-top: 1.2rem;
+      margin-top: 0.8rem;
       background: #ffb300;
       color: #fff;
       border: none;
-      padding: 0.5rem 1.4rem;
+      padding: 0.4rem 1.2rem;
       border-radius: 50px;
       font-family: var(--font-main);
       font-weight: 600;
-      font-size: 0.9rem;
-      box-shadow: 0 6px 15px rgba(255, 179, 0, 0.4);
+      font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
       transition: all 300ms ease;
       cursor: pointer;
     }
@@ -308,14 +311,13 @@
     .btn-replay:hover {
       background: #ffa000;
       transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(255, 179, 0, 0.6);
     }
 
     @media (max-width: 576px) {
-      :root { --mini-size: 22px; --big-size: 32px; }
-      #midMsg { font-size: 1.7rem; bottom: 8%; }
-      .glass-card { padding: 1.5rem 1.2rem; }
-      .wrapper-paper { width: 300px; height: 210px; }
+      :root { --mini-size: 22px; --big-size: 30px; }
+      #midMsg { font-size: 1.5rem; bottom: 8%; }
+      .glass-card { padding: 1rem 1.2rem; }
+      .wrapper-paper { width: 280px; height: 180px; }
     }
   </style>
 </head>
@@ -482,7 +484,7 @@ function initSparkles() {
     }
 
     const centerX = W() / 2;
-    const centerY = H() / 2 - 30;
+    const centerY = H() / 2 - 10;
     const starScale = Math.min(W(), H()) / 25;
 
     for (let i = 0; i < TOTAL_FLOWERS; i++) {
@@ -504,25 +506,22 @@ function initSparkles() {
 
     await wait(1800);
 
-    // 8) Formar RAMO BUCHÓN GIGANTE (Con TODAS las 110 flores)
-    // Aparecer envoltura del ramo abajo
-    const buchonBaseY = H() - (W() < 576 ? 180 : 220);
+    // 8) Formar RAMO BUCHÓN (Posicionamiento en Domo)
+    const buchonBaseY = H() - (W() < 576 ? 160 : 200);
     buchonWrapper.style.top = (buchonBaseY - 40) + 'px';
     buchonWrapper.classList.add('show');
 
     await wait(400);
 
-    // Posicionar flores formando una gran cúpula/domo densa
-    const radiusMax = Math.min(W() * 0.38, 160);
+    // Domo circular bien tupido sobre el papel
+    const radiusMax = Math.min(W() * 0.38, 140);
     
     for (let i = 0; i < TOTAL_FLOWERS; i++) {
-      // Distribución en espiral de Vogel (Fermat) para llenar el domo de forma perfecta
       const phi = i * 137.5 * (Math.PI / 180);
       const r = Math.sqrt(i / TOTAL_FLOWERS) * radiusMax;
       
-      const tx = centerX + r * Math.cos(phi) + (Math.random() * 6 - 3);
-      // aplanar un poco el fondo para que encaje en el papel
-      const ty = (buchonBaseY - 110) + (r * 0.75 * Math.sin(phi)) + (Math.random() * 6 - 3);
+      const tx = centerX + r * Math.cos(phi) + (Math.random() * 4 - 2);
+      const ty = (buchonBaseY - 90) + (r * 0.7 * Math.sin(phi)) + (Math.random() * 4 - 2);
 
       const el = flowers[i];
       const w = parseFloat(getComputedStyle(el).width);
@@ -531,14 +530,14 @@ function initSparkles() {
       el.style.left = (tx - w / 2) + 'px';
       el.style.top = (ty - h / 2) + 'px';
       el.classList.add('big');
-      el.style.zIndex = Math.floor(r); // Profundidad
+      el.style.zIndex = Math.floor(r) + 5;
 
-      await wait(12);
+      await wait(10);
     }
 
-    await wait(1200);
+    await wait(1000);
 
-    // 9) Mostrar Carta Final
+    // 9) Mostrar Carta Final en la parte superior
     finalText.innerHTML = '🌼 Para ti,<br>que nunca serás espectadora ✨';
     cardContainer.classList.add('visible');
 
